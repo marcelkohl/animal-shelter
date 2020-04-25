@@ -1,0 +1,469 @@
+swagger: "2.0"
+info:
+  description: "This is an api especification of the animal shelter code test from oetker digital."
+  version: "1.2.3"
+  title: "Animal Shelter"
+  contact:
+    email: "marcel.v.kohls@gmail.com"
+host: "animal-shelter"
+basePath: "/v1"
+tags:
+- name: "animal"
+  description: "Animals on shelter"
+- name: "shelter"
+  description: "Shelters for animals"
+- name: "worker"
+  description: "Animal Shelter worker"
+- name: "adopter"
+  description: "Person interested in adopt an animal"
+schemes:
+- "http"
+paths:
+  /shelter/list:
+    get:
+      tags:
+      - "shelter"
+      summary: "List shelters"
+      description: "Returns a list of shelters and it's ids"
+      operationId: "getShelterList"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: '#/definitions/shelterList'
+  /shelter:
+    post:
+      tags:
+      - "shelter"
+      summary: "Add a new shelter"
+      description: ""
+      operationId: "addShelter"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: body
+          name: shelter
+          description: "Create a shelter"
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/shelter"
+        400:
+          description: "Invalid data sent"
+        405:
+          description: "Not allowed at the moment"
+  /shelter/{shelterId}:
+    get:
+      tags:
+      - "shelter"
+      summary: "Find a shelter by Id"
+      description: "Returns a shelter information"
+      operationId: "getShelterById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "shelterId"
+        in: "path"
+        description: "Id of the shelter to be returned"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/shelter"
+        404:
+          description: "Shelter not found with this Id"
+    delete:
+      tags:
+      - "shelter"
+      summary: "Delete an specific shelter"
+      description: ""
+      operationId: "deleteShelter"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "shelterId"
+        in: "path"
+        description: "Shelter Id to be deleted"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "Shelter Deleted successfully"
+        404:
+          description: "Shelter not found with this Id"
+  /shelter/{shelterId}/animals:
+    get:
+      tags:
+      - "shelter"
+      summary: "List animals on shelters"
+      description: "Returns a list of animals on a specific shelter"
+      operationId: "getShelterAnimalsList"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "shelterId"
+        in: "path"
+        description: "Id of the shelter to be listed"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: '#/definitions/animalList'
+  /worker:
+    post:
+      tags:
+      - "worker"
+      summary: "Add a new worker"
+      description: ""
+      operationId: "addWorker"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "worker"
+          description: "Create a worker"
+          schema:
+            type: "object"
+            required:
+              - "shelterId"
+              - "name"
+              - "email"
+              - "password"
+            properties:
+              shelterId:
+                type: "integer"
+                format: "int64"
+              name:
+                type: "string"
+              email:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            properties:
+              workerId:
+                type: "integer"
+                format: "int64"
+              name:
+                type: "string"
+              email:
+                type: "string"
+        400:
+          description: "Invalid data sent"
+        405:
+          description: "Not allowed at the moment"
+  /worker/{workerId}:
+    delete:
+      tags:
+      - "worker"
+      summary: "Delete an specific worker"
+      description: ""
+      operationId: "deleteWorker"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "workerId"
+        in: "path"
+        description: "Worker Id to be deleted"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "worker Deleted successfully"
+        404:
+          description: "Worker not found with this Id"
+  /adopter/list:
+    get:
+      tags:
+      - "adopter"
+      summary: "List active adopters"
+      description: "Returns a list of adopters who requested to adopt an animal"
+      operationId: "getAdopterList"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: '#/definitions/adopterList'
+  /animal/list:
+    get:
+      tags:
+      - "animal"
+      summary: "List animals"
+      description: "Returns a list of animals with respective additional information"
+      operationId: "getAnimalsList"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "query"
+          name: "shelterName"
+          type: "string"
+          format: "int64"
+          description: "shelter name to be used as a filter"
+        - in: "query"
+          name: "adoptionRequestPending"
+          type: "boolean"
+          description: "filter by specific situation of the adoption request pending"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: '#/definitions/animalList'
+  /animal:
+    post:
+      tags:
+      - "animal"
+      summary: "Add a new animal"
+      description: ""
+      operationId: "addAnimal"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "animal"
+          description: "Create an animal"
+          schema:
+            type: "object"
+            required:
+              - "shelterId"
+              - "temporaryName"
+              - "adoptable"
+            properties:
+              shelterId:
+                type: "integer"
+              picture:
+                type: "string"
+              medicalCondition:
+                type: "string"
+              temporaryName:
+                type: "string"
+              suposedRace:
+                type: "string"
+              adoptable:
+                type: "boolean"
+      responses:
+        204:
+          description: "successful operation"
+        400:
+          description: "Invalid data sent"
+        405:
+          description: "Not allowed at the moment"
+  /animal/{animalId}:
+    get:
+      tags:
+      - "animal"
+      summary: "Find an animal by Id"
+      description: "Returns animal information"
+      operationId: "getAnimalById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "animalId"
+        in: "path"
+        description: "Id of the animal to be returned"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/animal"
+        404:
+          description: "Animal not found with this Id"
+    delete:
+      tags:
+      - "animal"
+      summary: "Delete a specific animal"
+      description: ""
+      operationId: "deleteAnimal"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "animalId"
+        in: "path"
+        description: "Animal Id to be deleted"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "Animal Deleted successfully"
+        404:
+          description: "Animal not found with this Id"
+  /animal/{animalId}/adoptable:
+    patch:
+      tags:
+      - "animal"
+      summary: "Set animal adoptable status"
+      operationId: "setAnimalAsAdoptable"
+      parameters:
+        - name: "animalId"
+          in: "path"
+          required: true
+          type: "string"
+          description: "Id of the animal to be updated"
+        - name: "updates"
+          description: "Animal attributes to be updated"
+          in: "body"
+          required: true
+          schema:
+            type: object
+            required:
+              - "adoptable"
+            properties:
+              adoptable:
+                type: "boolean"
+      responses:
+        204:
+          description: "Animal updated successfully"
+        404:
+          description: "Animal not found with this Id"
+  /animal/{animalId}/adoptionRequest:
+    post:
+      tags:
+      - "animal"
+      summary: "Create a request to adopt an specific animal"
+      operationId: "requestAnimalAdoption"
+      parameters:
+        - name: "animalId"
+          in: "path"
+          required: true
+          type: "string"
+          description: "Id of the animal to be requested to adopt"
+        - name: "requester"
+          description: "Information from the adopter requester"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - "name"
+              - "email"
+              - "phone"
+            properties:
+              name:
+                type: "string"
+              email:
+                type: "string"
+              phone:
+                type: "string"
+      responses:
+        204:
+          description: "Requested successfully"
+        402:
+          description: "Adoption request cannot be done"
+        404:
+          description: "Animal not found with this Id"
+    delete:
+      tags:
+      - "animal"
+      summary: "Remove the actual request for adoption for an specific animal"
+      description: ""
+      operationId: "removeRequestAnimalAdoption"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "animalId"
+        in: "path"
+        description: "Animal Id to be removed from adoption request"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "Request removed successfully"
+        404:
+          description: "Animal not found with this Id"
+definitions:
+  shelterList:
+    type: "array"
+    items:
+      $ref: "#/definitions/shelter"
+  shelter:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Shelter unique Id."
+      name:
+        type: "string"
+        description: "Shelter name."
+  adopterList:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "adopter unique Id."
+        name:
+          type: "string"
+          description: "adopter name."
+        email:
+          type: "string"
+          description: "adopter email."
+        phone:
+          type: "string"
+          description: "adopter phone"
+        animalId:
+          type: "integer"
+          description: "animal Id requested to be adopted."
+  animal:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "animal unique Id."
+      shelterId:
+        type: "integer"
+        description: "shelter Id where the animal is located."
+      picture:
+        type: "string"
+        description: "link to the animal's picture."
+      medicalCondition:
+        type: "string"
+        description: "updated animal medical condition."
+      temporaryName:
+        type: "string"
+        description: "current temporary name of the animal."
+      suposedRace:
+        type: "string"
+        description: "supposed animal race."
+      adoptable:
+        type: "boolean"
+        description: "identifies if the animal is able to be adopted or not"
+  animalList:
+    type: "array"
+    items:
+      $ref: "#/definitions/shelter"
