@@ -1,7 +1,7 @@
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](#)
 [![Generic badge](https://img.shields.io/badge/Status-Deprecated-orange.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/License-BSD_3-blue.svg)](https://shields.io/)
-[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/Naereen/ama)
+[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/marcelkohl)
 
 # animal-shelter
 Animal shelter api using [slim framework](http://www.slimframework.com/) and following [open-api specification](https://swagger.io/docs/specification/about/).
