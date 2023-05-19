@@ -1,6 +1,6 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](#)
-[![Generic badge](https://img.shields.io/badge/Status-Deprecated-orange.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/License-BSD_3-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Status-Deprecated-orange.svg)](#)
+[![Generic badge](https://img.shields.io/badge/License-BSD_3-blue.svg)](https://opensource.org/license/bsd-3-clause/)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/marcelkohl)
 
 # animal-shelter
